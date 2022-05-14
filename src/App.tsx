@@ -117,7 +117,6 @@ function App() {
                         type="radio"
                         value={choice}
                         checked={choice === answers[startsFrom + questionIndex]}
-                        // @ts-ignore
                         onChange={e => !isAnswersVisible ? handleSetChoice(e, startsFrom + questionIndex) : () => {}}
                       />
                       <span className="question-choice">{choice}</span>
