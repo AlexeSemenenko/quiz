@@ -106,11 +106,24 @@
     font-size: 18px;
 }
 
-.question-text--highlighted {
+.highlighted-empty {
     color: rgba(182, 10, 30, 0.97);
+}
+
+.highlighted-correct {
+    color: rgba(30, 190, 11, 0.97);
+}
+
+.highlighted-wrong {
+    color: rgb(255, 0, 0);
 }
 
 .question-choice {
     font-size: 18px;
     margin-left: 5px;
+}
+
+.question-answer {
+    font-weight: bold;
+    font-style: italic;
 }

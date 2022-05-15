@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import classNames from 'classnames'
 
 import { TASKS } from './constants'
 
@@ -38,6 +39,8 @@ function App() {
   function checkIfAllSelected() {
     return !answers.some(it => !it)
   }
+
+  console.log(answers)
 
   return (
     <div className="container">
@@ -88,9 +91,11 @@ function App() {
 
       {TASKS.map((task, taskIndex) => {
         let startsFrom = 0
-        if (taskIndex !== 0) {
-          startsFrom = TASKS[taskIndex - 1].questions.length
-        }
+        TASKS.forEach((it, itIndex) => {
+          if (itIndex < taskIndex) {
+            startsFrom += it.questions.length
+          }
+        })
 
         return (
           <div key={`task-${taskIndex}`} className="content-container">
@@ -101,15 +106,18 @@ function App() {
             <div className="task-container">
               {task.questions.map((question, questionIndex) => (
                 <div key={`task-${taskIndex}-question-${questionIndex}`}>
-                  {isCheckClicked && !answers[startsFrom + questionIndex] ? (
-                    <p className="question-text question-text--highlighted">
-                      {questionIndex + 1}. {question.text}
-                    </p>
-                  ) : (
-                    <p className="question-text">
-                      {questionIndex + 1}. {question.text}
-                    </p>
-                  )}
+                  <p
+                    className={classNames(
+                      'question-text',
+                      {
+                        'highlighted-empty': isCheckClicked && !answers[startsFrom + questionIndex],
+                        'highlighted-correct': isAnswersVisible && answers[startsFrom + questionIndex] === question.rightAnswer,
+                        'highlighted-wrong': isAnswersVisible && answers[startsFrom + questionIndex] !== question.rightAnswer,
+                      }
+                    )}
+                  >
+                    {questionIndex + 1}. {question.text}
+                  </p>
 
                   {question.choices.map((choice, choiceIndex) => (
                     <div key={`task-${taskIndex}-question-${questionIndex}-choice-${choiceIndex}`}>
@@ -124,13 +132,25 @@ function App() {
                   ))}
 
                   {isAnswersVisible && (
-                    <>
-                      {answers[startsFrom + questionIndex] === question.rightAnswer ? (
-                        <p>Ura</p>
-                      ) : (
-                        <p>Ti loh</p>
+                    <span
+                      className={classNames(
+                        'question-answer',
+                        {
+                          'highlighted-correct': answers[startsFrom + questionIndex] === question.rightAnswer,
+                          'highlighted-wrong': answers[startsFrom + questionIndex] !== question.rightAnswer,
+                        }
                       )}
-                    </>
+                    >
+                      {answers[startsFrom + questionIndex] === question.rightAnswer ? (
+                        <span>
+                          Correct :)
+                        </span>
+                      ) : (
+                        <>
+                          Wrong ;(
+                        </>
+                      )}
+                    </span>
                   )}
                 </div>
               ))}
