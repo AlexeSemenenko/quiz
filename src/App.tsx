@@ -27,7 +27,6 @@ function App() {
       setIsCheckClick(true)
       alert('Please answer all questions')
     }
-
   }
 
   function handleRestart() {
@@ -39,8 +38,6 @@ function App() {
   function checkIfAllSelected() {
     return !answers.some(it => !it)
   }
-
-  console.log(answers)
 
   return (
     <div className="container">
@@ -143,11 +140,11 @@ function App() {
                     >
                       {answers[startsFrom + questionIndex] === question.rightAnswer ? (
                         <span>
-                          Correct :)
+                          Correct
                         </span>
                       ) : (
                         <>
-                          Wrong ;(
+                          Wrong
                         </>
                       )}
                     </span>
