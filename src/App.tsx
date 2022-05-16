@@ -12,12 +12,19 @@ function App() {
   const [answers, setAnswers] = useState<Array<any>>(emptyArray)
   const [isAnswersVisible, setIsAnswersVisible] = useState<boolean>(false)
   const [isCheckClicked, setIsCheckClick] = useState<boolean>(false)
+  const [rightAnswers, setRightAnswers] = useState<Array<boolean>>(emptyArray)
 
-  function handleSetChoice(e: any, index: number) {
+  function handleSetChoice(e: any, setIndex: number, taskIndex: number, questionIndex: number) {
     const newAnswers = [...answers]
-    newAnswers[index] = e.target.value
+    newAnswers[setIndex] = e.target.value
 
     setAnswers(newAnswers)
+
+    const newRightAnswers = [...rightAnswers]
+
+    newRightAnswers[setIndex] = e.target.value === TASKS[taskIndex].questions[questionIndex].rightAnswer
+
+    setRightAnswers(newRightAnswers)
   }
 
   function handleCheckAnswers() {
@@ -33,6 +40,7 @@ function App() {
     setAnswers(emptyArray)
     setIsAnswersVisible(false)
     setIsCheckClick(false)
+    setRightAnswers(emptyArray)
   }
 
   function checkIfAllSelected() {
@@ -68,21 +76,29 @@ function App() {
           </a>
         </div>
 
-        {!isAnswersVisible ? (
-          <button
-            className="button"
-            onClick={handleCheckAnswers}
-          >
-            Check Answers
-          </button>
-        ) : (
-          <button
-            className="button"
-            onClick={handleRestart}
-          >
-            Restart
-          </button>
-        )}
+        <div>
+          {!isAnswersVisible ? (
+            <button
+              className="button"
+              onClick={handleCheckAnswers}
+            >
+              Check Answers
+            </button>
+          ) : (
+            <>
+              <div className="score">
+                {`Score: ${rightAnswers.filter(it => it).length} / ${totalLength}`}
+              </div>
+
+              <button
+                className="button"
+                onClick={handleRestart}
+              >
+                Restart
+              </button>
+            </>
+          )}
+        </div>
 
       </div>
 
@@ -122,7 +138,7 @@ function App() {
                         type="radio"
                         value={choice}
                         checked={choice === answers[startsFrom + questionIndex]}
-                        onChange={e => !isAnswersVisible ? handleSetChoice(e, startsFrom + questionIndex) : () => {}}
+                        onChange={e => !isAnswersVisible ? handleSetChoice(e, startsFrom + questionIndex, taskIndex, questionIndex) : () => {}}
                       />
                       <span className="question-choice">{choice}</span>
                     </div>
@@ -143,9 +159,9 @@ function App() {
                           Correct
                         </span>
                       ) : (
-                        <>
+                        <span>
                           Wrong
-                        </>
+                        </span>
                       )}
                     </span>
                   )}

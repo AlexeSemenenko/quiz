@@ -8,9 +8,9 @@ export const TASKS = [
         rightAnswer: 'expensive',
       },
       {
-        text: 'In the North Sea ___ than the Mediterranean Sea?',
+        text: 'Is the North Sea ___ than the Mediterranean Sea?',
         choices: ['more big', 'bigger'],
-        rightAnswer: 'more big',
+        rightAnswer: 'bigger',
       },
       {
         text: 'My dad\'s ___ than your dad!',
